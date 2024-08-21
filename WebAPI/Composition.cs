@@ -4,8 +4,8 @@
 
 namespace WebAPI;
 
-using Pure.DI;
 using Controllers;
+using Pure.DI;
 using Pure.DI.MS;
 using WeatherForecast;
 using static Pure.DI.Lifetime;
@@ -20,7 +20,7 @@ internal partial class Composition : ServiceProviderFactory<Composition>
         .Hint(
             Hint.OnCannotResolveContractTypeNameRegularExpression,
             @"^Microsoft\.(Extensions|AspNetCore)\..+$")
-        .Bind().As(Singleton).To<WeatherForecastService>()
-        // Provides the composition root for Weather Forecast controller
-        .Root<WeatherForecastController>();
+        // Scoped lifetime means that I expected to have a new CounterService per Http request
+        .Bind().As(Scoped).To<CounterService>()
+        .Root<CounterController>();
 }
